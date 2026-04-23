@@ -97,10 +97,8 @@ export interface CORSConfig {
 }
 
 export const CORS_CONFIG: CORSConfig = {
-  allowedOrigins: process.env.ALLOWED_ORIGINS?.split(',') || [
-    process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-  ],
-  allowedMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedOrigins: ['*'],
+  allowedMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: [
     'Content-Type',
     'Authorization',
