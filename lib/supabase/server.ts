@@ -1,5 +1,5 @@
 import { createServerClient as createSupabaseServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Server client for API routes
@@ -35,8 +35,42 @@ export const createServerClient = () => {
   });
 };
 
-// Get authenticated user from request
+// Get authenticated user from request (supports both cookies and Authorization header)
 export const getUser = async () => {
+  // Try to get token from Authorization header first
+  const headersList = headers();
+  const authHeader = headersList.get('authorization');
+  
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.substring(7);
+    
+    // Create Supabase client with token
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    
+    const supabase = createSupabaseServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        get() { return undefined; },
+        set() {},
+        remove() {},
+      },
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    });
+    
+    const { data: { user }, error } = await supabase.auth.getUser();
+    
+    if (error || !user) {
+      return null;
+    }
+    
+    return user;
+  }
+  
+  // Fallback to cookie-based authentication
   const supabase = createServerClient();
   const {
     data: { user },
