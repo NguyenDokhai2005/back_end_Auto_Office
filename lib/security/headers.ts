@@ -118,10 +118,12 @@ export function applyCORSHeaders(
 ): NextResponse {
   const { allowedOrigins, allowedMethods, allowedHeaders, maxAge } = CORS_CONFIG;
 
-  // Check if origin is allowed
-  if (origin && allowedOrigins.includes(origin)) {
+  // When credentials are used, we must return the specific origin, not '*'
+  // Allow all origins by reflecting the request origin
+  if (origin) {
     response.headers.set('Access-Control-Allow-Origin', origin);
   } else if (allowedOrigins.includes('*')) {
+    // Fallback to * only if no origin is provided (shouldn't happen in practice)
     response.headers.set('Access-Control-Allow-Origin', '*');
   }
 
