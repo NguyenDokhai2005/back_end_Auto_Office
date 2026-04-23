@@ -1,12 +1,6 @@
 {
   "version": 2,
   "name": "office-automation-platform",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
   "env": {
     "NODE_ENV": "production"
   },
