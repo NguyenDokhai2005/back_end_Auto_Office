@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     validateEmail(email);
 
     // Create Supabase client
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
 
     // Sign in user
     const { data, error } = await supabase.auth.signInWithPassword({

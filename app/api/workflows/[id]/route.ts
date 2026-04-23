@@ -12,7 +12,7 @@ export async function GET(
 ) {
   try {
     const user = await requireAuth();
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
     const { id } = params;
 
     // Select all fields including metadata, created_at, updated_at
@@ -40,7 +40,7 @@ export async function PUT(
 ) {
   try {
     const user = await requireAuth();
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
     const { id } = params;
     const body = await request.json();
 
@@ -115,7 +115,7 @@ export async function DELETE(
 ) {
   try {
     const user = await requireAuth();
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
     const { id } = params;
 
     // Check ownership

@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth();
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
 
     // Fetch user settings
     const { data, error } = await supabase
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const user = await requireAuth();
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
     const body = await request.json();
 
     const { email_config, preferences } = body;

@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: NextRequest) {
   try {
     // Create Supabase client
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
 
     // Sign out user
     const { error } = await supabase.auth.signOut();

@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth();
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
 
     // Get query params
     const { searchParams } = new URL(request.url);
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const user = await requireAuth();
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
     const body = await request.json();
 
     const { workflow_id, status = 'running' } = body;

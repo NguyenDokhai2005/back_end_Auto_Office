@@ -12,7 +12,7 @@ export async function GET(
 ) {
   try {
     const user = await requireAuth();
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
     const { id } = params;
 
     // Fetch execution with workflow details
@@ -78,7 +78,7 @@ export async function PATCH(
 ) {
   try {
     const user = await requireAuth();
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
     const { id } = params;
     const body = await request.json();
 
