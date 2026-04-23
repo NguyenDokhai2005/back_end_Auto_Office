@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { requireAuth, createServerClient } from '@/lib/supabase/server';
+import { requireAuth, createServerClient, createServiceClient } from '@/lib/supabase/server';
 import { ApiResponse } from '@/lib/utils/response';
 import { validateRequired, errorResponse } from '@/lib/utils/errors';
 
@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth();
-    const supabase = createServerClient();
+    const supabase = createServiceClient();
 
     // Get query params
     const { searchParams } = new URL(request.url);
@@ -54,7 +54,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const user = await requireAuth();
-    const supabase = createServerClient();
+    
+    // Use service client to bypass RLS when using Bearer token
+    // This is safe because we already validated the user with requireAuth()
+    const supabase = createServiceClient();
     const body = await request.json();
 
     const { name, description, nodes, edges, metadata } = body;

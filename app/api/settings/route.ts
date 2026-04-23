@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { requireAuth, createServerClient } from '@/lib/supabase/server';
+import { requireAuth, createServiceClient } from '@/lib/supabase/server';
 import { ApiResponse } from '@/lib/utils/response';
 import { errorResponse } from '@/lib/utils/errors';
 
