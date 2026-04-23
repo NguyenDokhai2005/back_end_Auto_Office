@@ -6,6 +6,8 @@ import { AIProvider } from '@/lib/ai/adapter';
 import { aiRateLimiter } from '@/lib/utils/rateLimit';
 import { AIRequest } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     // Authentication check

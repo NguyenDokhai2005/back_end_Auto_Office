@@ -3,6 +3,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { ApiResponse } from '@/lib/utils/response';
 import { validateRequired, validateEmail, validatePassword, errorResponse } from '@/lib/utils/errors';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

@@ -3,6 +3,8 @@ import { getUser } from '@/lib/supabase/server';
 import { ApiResponse } from '@/lib/utils/response';
 import { errorResponse } from '@/lib/utils/errors';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const user = await getUser();

@@ -3,6 +3,8 @@ import { createServerClient } from '@/lib/supabase/server';
 import { ApiResponse } from '@/lib/utils/response';
 import { errorResponse } from '@/lib/utils/errors';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     // Create Supabase client

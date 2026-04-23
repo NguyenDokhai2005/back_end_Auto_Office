@@ -3,6 +3,8 @@ import { requireAuth, createServerClient } from '@/lib/supabase/server';
 import { ApiResponse } from '@/lib/utils/response';
 import { validateRequired, errorResponse } from '@/lib/utils/errors';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/executions/[id] - Get execution details
 export async function GET(
   request: NextRequest,

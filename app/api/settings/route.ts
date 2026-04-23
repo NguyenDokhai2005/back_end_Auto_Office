@@ -3,6 +3,8 @@ import { requireAuth, createServerClient } from '@/lib/supabase/server';
 import { ApiResponse } from '@/lib/utils/response';
 import { errorResponse } from '@/lib/utils/errors';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/settings - Get user settings
 export async function GET(request: NextRequest) {
   try {
