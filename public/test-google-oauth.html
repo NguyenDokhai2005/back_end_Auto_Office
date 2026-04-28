@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Google OAuth - Auto Office</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge.success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .badge.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .badge.info {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .btn-google {
+      background: #4285f4;
+      color: white;
+    }
+
+    .btn-google:hover {
+      background: #357ae8;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(66, 133, 244, 0.3);
+    }
+
+    .btn-google:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: #f1f3f4;
+      color: #333;
+    }
+
+    .btn-secondary:hover {
+      background: #e8eaed;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    .info-box {
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .info-box p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .info-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .user-info {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    .user-info h3 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .user-field {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .user-field:last-child {
+      border-bottom: none;
+    }
+
+    .user-field label {
+      color: #666;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .user-field span {
+      color: #333;
+      font-size: 14px;
+      word-break: break-all;
+    }
+
+    .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      display: block;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      display: none;
+    }
+
+    .error-message.active {
+      display: block;
+    }
+
+    .success-message {
+      background: #d4edda;
+      color: #155724;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      display: none;
+    }
+
+    .success-message.active {
+      display: block;
+    }
+
+    code {
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #e83e8c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 Google OAuth Test</h1>
+    <p class="subtitle">Test Google Sign-In Integration</p>
+
+    <div class="info-box">
+      <p><strong>📝 Hướng dẫn:</strong></p>
+      <p>1. Click "Sign in with Google"</p>
+      <p>2. Chọn tài khoản Google</p>
+      <p>3. Authorize app</p>
+      <p>4. Xem thông tin user</p>
+    </div>
+
+    <!-- Login Section -->
+    <div class="section" id="loginSection">
+      <div class="section-title">
+        <span>🚀 Authentication</span>
+      </div>
+      <button class="btn-google" onclick="loginWithGoogle()">
+        <svg width="20" height="20" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Sign in with Google
+      </button>
+      <button class="btn-secondary" onclick="testGetUser()">
+        Test Get User Info
+      </button>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Processing...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message" id="errorMessage"></div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="successMessage"></div>
+
+    <!-- User Info Section -->
+    <div class="section" id="userSection" style="display: none;">
+      <div class="section-title">
+        <span>👤 User Information</span>
+        <span class="badge success">Authenticated</span>
+      </div>
+      <div class="user-info">
+        <img id="userAvatar" class="avatar" src="" alt="Avatar" style="display: none;">
+        <h3 id="userName"></h3>
+        <div class="user-field">
+          <label>Email:</label>
+          <span id="userEmail"></span>
+        </div>
+        <div class="user-field">
+          <label>User ID:</label>
+          <span id="userId"></span>
+        </div>
+        <div class="user-field">
+          <label>Provider:</label>
+          <span id="userProvider"></span>
+        </div>
+        <div class="user-field">
+          <label>Email Verified:</label>
+          <span id="userVerified"></span>
+        </div>
+      </div>
+      <button class="btn-danger" onclick="logout()" style="margin-top: 20px;">
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = window.location.origin;
+    let accessToken = null;
+
+    // Check if we have token in URL (from callback)
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('access_token');
+      
+      if (token) {
+        accessToken = token;
+        localStorage.setItem('access_token', token);
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+        // Get user info
+        testGetUser();
+      } else {
+        // Check localStorage
+        const storedToken = localStorage.getItem('access_token');
+        if (storedToken) {
+          accessToken = storedToken;
+          testGetUser();
+        }
+      }
+    });
+
+    async function loginWithGoogle() {
+      try {
+        showLoading(true);
+        hideMessages();
+
+        // Call API to get OAuth URL
+        const response = await fetch(`${API_BASE}/api/auth/google`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to initiate OAuth');
+        }
+
+        // Redirect to Google OAuth
+        window.location.href = data.data.url;
+      } catch (error) {
+        showLoading(false);
+        showError(error.message);
+      }
+    }
+
+    async function testGetUser() {
+      try {
+        showLoading(true);
+        hideMessages();
+
+        if (!accessToken) {
+          throw new Error('No access token. Please login first.');
+        }
+
+        const response = await fetch(`${API_BASE}/api/auth/user`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to get user info');
+        }
+
+        // Display user info
+        displayUserInfo(data.data);
+        showSuccess('Successfully authenticated!');
+      } catch (error) {
+        showError(error.message);
+        // Clear invalid token
+        accessToken = null;
+        localStorage.removeItem('access_token');
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    function displayUserInfo(user) {
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('userSection').style.display = 'block';
+
+      document.getElementById('userName').textContent = user.name || 'N/A';
+      document.getElementById('userEmail').textContent = user.email || 'N/A';
+      document.getElementById('userId').textContent = user.id || 'N/A';
+      document.getElementById('userProvider').textContent = user.provider || 'N/A';
+      document.getElementById('userVerified').textContent = user.email_verified ? 'Yes' : 'No';
+
+      if (user.avatar_url) {
+        const avatar = document.getElementById('userAvatar');
+        avatar.src = user.avatar_url;
+        avatar.style.display = 'block';
+      }
+    }
+
+    function logout() {
+      accessToken = null;
+      localStorage.removeItem('access_token');
+      document.getElementById('loginSection').style.display = 'block';
+      document.getElementById('userSection').style.display = 'none';
+      hideMessages();
+      showSuccess('Logged out successfully');
+    }
+
+    function showLoading(show) {
+      const loading = document.getElementById('loading');
+      if (show) {
+        loading.classList.add('active');
+      } else {
+        loading.classList.remove('active');
+      }
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.textContent = '❌ ' + message;
+      errorDiv.classList.add('active');
+    }
+
+    function showSuccess(message) {
+      const successDiv = document.getElementById('successMessage');
+      successDiv.textContent = '✅ ' + message;
+      successDiv.classList.add('active');
+    }
+
+    function hideMessages() {
+      document.getElementById('errorMessage').classList.remove('active');
+      document.getElementById('successMessage').classList.remove('active');
+    }
+  </script>
+</body>
+</html>
